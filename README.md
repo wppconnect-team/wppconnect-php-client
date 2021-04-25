@@ -174,33 +174,40 @@ endif;
 This class is still in development.
 See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) all the wppconnect-server functions. 
 
-- generateToken
-- startSession
-- closeSession
-- checkConnectionSession
-- sendMessage
-- sendFileBase64
-- sendLinkPreview
-- sendLocation
-- showAllSessions
-- getMediaByMessage
-- sendImage
-- sendStatus
-- createGroup
-- showAllContacts
-- showAllChats
-- showAllGroups
-- showAllBlocklist
-- getChatById
-- getBatteryLevel
-- archiveChat
-- deleteMessage
-- markUnseenContact
-- blockContact
-- unblockContact
-- getHostDevice
-- forwardMessages
-- pinChat
+## Sessions
+- generateToken([:session, :secret_key]) 
+- startSession([:session]) 
+- closeSession([:session]) 
+- checkConnectionSession([:session]) 
+- showAllSessions([:session]) 
+- getMediaByMessage([:session, :messageId])
+
+## Message
+- sendMessage([:session, :phone, :message]) 
+- sendFileBase64([:session, :phone, :base64]) 
+- sendLinkPreview([:session, :phone, :url, :caption]) 
+- sendLocation([:session, :phone, :lat, :long, :title]) 
+- sendImage([:session, :phone, :caption, path]) 
+- sendStatus([:session, :message]) 
+
+## Group
+- createGroup([:session, :participants[], :name]) 
+
+## Device
+- showAllContacts([:session]) 
+- showAllChats([:session]) 
+- showAllGroups([:session]) 
+- showAllBlocklist([:session]) 
+- getChatById([:session, :phone]) 
+- getBatteryLevel([:session]) 
+- archiveChat([:session, :phone]) 
+- deleteMessage([:session, :phone]) 
+- markUnseenContact([:session, :phone]) 
+- blockContact([:session, :phone]) 
+- unblockContact([:session, :phone]) 
+- getHostDevice([:session]) 
+- forwardMessages([:session, :phone, :messageId]) 
+- pinChat([:session, :phone, :state]) 
 
 ## License
 
