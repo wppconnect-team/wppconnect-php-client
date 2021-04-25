@@ -3,7 +3,7 @@
 
 A simple API class PHP, providing easy access to wppconnect's endpoints.
 
-# Requirements
+## Requirements
 
 * PHP 7.0 or newer
 
@@ -169,12 +169,12 @@ if (isset($_SESSION['token']) and isset($_SESSION['init'])) :
 endif;
  ```
 
-# Functions/methods supported (Up to now)
+## Functions/methods supported (Up to now)
 
 This class is still in development.
 See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) all the wppconnect-server functions. 
 
-## Sessions
+### Sessions
 - generateToken([:session, :secret_key]) 
 - startSession([:session]) 
 - closeSession([:session]) 
@@ -182,7 +182,7 @@ See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/ro
 - showAllSessions([:session]) 
 - getMediaByMessage([:session, :messageId])
 
-## Message
+### Message
 - sendMessage([:session, :phone, :message]) 
 - sendFileBase64([:session, :phone, :base64]) 
 - sendLinkPreview([:session, :phone, :url, :caption]) 
@@ -190,10 +190,10 @@ See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/ro
 - sendImage([:session, :phone, :caption, :path]) 
 - sendStatus([:session, :message]) 
 
-## Group
+### Group
 - createGroup([:session, :participants[:phone, :phone, ...], :name]) 
 
-## Other
+### Other
 - showAllContacts([:session]) 
 - showAllChats([:session]) 
 - showAllGroups([:session]) 
@@ -207,9 +207,21 @@ See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/ro
 - forwardMessages([:session, :phone, :messageId]) 
 - markUnseenContact([:session, :phone]) 
 
-## Device
+### Device
 - getBatteryLevel([:session]) 
 - getHostDevice([:session]) 
+
+## Webhook Test
+
+A helper [class](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhookTest.php) to log and get the Wppconnect webhook request.
+
+### Configuration
+This server use environment variables to define some options, that can be:
+
+* `WEBHOOK_URL` - The webhook url to receive WhatsApp events (Messages, ACKs, States)
+
+As a alternative, you can define theses options using the `.env` file.
+To do that, you can make a copy of `.env.example` (`cp .env.example .env`) and change the values
 
 ## License
 
