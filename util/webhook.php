@@ -1,9 +1,12 @@
 <?php
 
+namespace Wppconnect;
+
 /**
  * A helper class to log and get the Wppconnect webhook request
  */
-class webhookTest {
+class Webhook
+{
 
     /**
      * Log a message to a file
@@ -15,7 +18,7 @@ class webhookTest {
     {
         $prefix = 'webhookLog_';
         $file = $type . '.log';
-        $date = new DateTime();
+        $date = new \DateTime();
         error_log($date->format('Y-m-d H:i:s') . ' ' . $message . "\n\n", 3, $prefix . $file);
     }
 
@@ -33,6 +36,3 @@ class webhookTest {
         return json_decode($rawData);
     }
 }
-
-$webhook = new webhookTest;
-$requestData = $webhook->getRequest();
