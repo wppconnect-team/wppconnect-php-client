@@ -187,27 +187,29 @@ See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/ro
 - sendFileBase64([:session, :phone, :base64]) 
 - sendLinkPreview([:session, :phone, :url, :caption]) 
 - sendLocation([:session, :phone, :lat, :long, :title]) 
-- sendImage([:session, :phone, :caption, path]) 
+- sendImage([:session, :phone, :caption, :path]) 
 - sendStatus([:session, :message]) 
 
 ## Group
-- createGroup([:session, :participants[], :name]) 
+- createGroup([:session, :participants[:phone, :phone, ...], :name]) 
 
-## Device
+## Other
 - showAllContacts([:session]) 
 - showAllChats([:session]) 
 - showAllGroups([:session]) 
 - showAllBlocklist([:session]) 
 - getChatById([:session, :phone]) 
-- getBatteryLevel([:session]) 
-- archiveChat([:session, :phone]) 
-- deleteMessage([:session, :phone]) 
-- markUnseenContact([:session, :phone]) 
 - blockContact([:session, :phone]) 
 - unblockContact([:session, :phone]) 
-- getHostDevice([:session]) 
-- forwardMessages([:session, :phone, :messageId]) 
+- archiveChat([:session, :phone]) 
 - pinChat([:session, :phone, :state]) 
+- deleteMessage([:session, :phone]) 
+- forwardMessages([:session, :phone, :messageId]) 
+- markUnseenContact([:session, :phone]) 
+
+## Device
+- getBatteryLevel([:session]) 
+- getHostDevice([:session]) 
 
 ## License
 
