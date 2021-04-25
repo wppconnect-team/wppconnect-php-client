@@ -213,7 +213,7 @@ See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/ro
 
 ## Webhook Test
 
-A helper [class](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhookTest.php) to log and get the Wppconnect webhook request.
+A helper [class](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) to log and get the Wppconnect webhook request.
 
 ### Configuration
 This server use environment variables to define some options, that can be:
@@ -222,6 +222,13 @@ This server use environment variables to define some options, that can be:
 
 As a alternative, you can define theses options using the `.env` file.
 To do that, you can make a copy of `.env.example` (`cp .env.example .env`) and change the values
+
+### Usage
+
+``` php
+$webhook = new Webhook();
+$requestData = $webhook->getRequest();
+```
 
 ## License
 
