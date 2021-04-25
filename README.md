@@ -182,6 +182,25 @@ See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/ro
 - sendFileBase64
 - sendLinkPreview
 - sendLocation
+- showAllSessions
+- getMediaByMessage
+- sendImage
+- sendStatus
+- createGroup
+- showAllContacts
+- showAllChats
+- showAllGroups
+- showAllBlocklist
+- getChatById
+- getBatteryLevel
+- archiveChat
+- deleteMessage
+- markUnseenContact
+- blockContact
+- unblockContact
+- getHostDevice
+- forwardMessages
+- pinChat
 
 ## License
 
