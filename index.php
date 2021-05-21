@@ -40,7 +40,7 @@ if (isset($_SESSION['token']) and !isset($_SESSION['init'])) :
     ]);
     $response = $wppconnect->toArray($response);
 
-    if ($response['message'] == 'Inicializando Sessão') :
+    if ($response['status'] == 'CONNECTED') :
         $_SESSION['init'] = true;
     endif;
 
