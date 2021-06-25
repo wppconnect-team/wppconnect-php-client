@@ -143,7 +143,7 @@ $wppconnect->debug($response);
 ## Funções/Métodos Suportados (até este momento) 
 
 Este cliente PHP ainda está em desenvolvimento. 
-veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) todos os endpoints do WPPConnect Server. 
+Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) todos os endpoints do WPPConnect Server. 
 
 ### Token
 - generateToken([:session,:secret_key]) 
@@ -153,7 +153,7 @@ veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 - showAllSessions([:session]);
 - startSession([:session,:webhook,:waitQrCode]);
 - closeSession([:session]);
-- LogoutSession([:session]);
+- logoutSession([:session]);
 - checkConnectionSession([:session]);
 - statusSession([:session]);
 - qrcodeSession([:session]);
