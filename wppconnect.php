@@ -1,5 +1,21 @@
 <?php
 
+/*
+ * Copyright 2021 WPPConnect Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 namespace Wppconnect;
 
 class Wppconnect
@@ -42,6 +58,18 @@ class Wppconnect
         print_r($array);
         echo "</pre>";
         die;
+    }
+
+    /**
+     * Image to Base64
+     *
+     * @param string $imagePath
+     * @return string
+     */
+    public function fileToBase64(string $imagePath): string
+    {
+        $finfo = new \finfo(FILEINFO_MIME_TYPE);
+        return 'data:' . $finfo->file($imagePath) . ';base64,' . base64_encode(file_get_contents($imagePath));
     }
 
   /**
@@ -129,7 +157,7 @@ class Wppconnect
      * @param array $data
      * @return string
      */
-    protected function sendCurl(string $method, string $function, array $data): string
+    protected function sendCurl(string $method, string $function, array $data, string $param = null): string
     {
         /**
          * Route
@@ -159,12 +187,15 @@ class Wppconnect
          */
         $ch = curl_init();
         if ($method == "post") :
+            #TEMP HOOK (NEED TO CHANGE ROUTE IN WPPSERVER)
+            $function = ($function == "set-profile-pic" or $function == "set-profile-status")
+                ? substr($function, 4) : $function;
             curl_setopt($ch, CURLOPT_URL, $this->options['base_url'] . '/' .  $api . '/' . $function);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         else :
-            if ($function == "get-media-by-message") :
+            if ($param !== null) :
                 curl_setopt($ch, CURLOPT_URL, $this->options['base_url'] . '/' .  $api . '/' . $function .
-                '/' . $data['messageId']);
+                '/' . $data[$param]);
             else :
                 curl_setopt($ch, CURLOPT_URL, $this->options['base_url'] . '/' .  $api . '/' . $function .
                 '?' . http_build_query($data));
@@ -211,18 +242,6 @@ class Wppconnect
     }
 
     /**
-     * Start Session
-     *
-     * @param array $data
-     * @return string
-     */
-    public function startSession(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-
-    /**
      * Show All Session
      *
      * @param array $data
@@ -233,6 +252,16 @@ class Wppconnect
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
 
+    /**
+     * Start Session
+     *
+     * @param array $data
+     * @return string
+     */
+    public function startSession(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
 
     /**
      * Close Session
@@ -241,6 +270,17 @@ class Wppconnect
      * @return string
      */
     public function closeSession(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Logout Session
+     *
+     * @param array $data
+     * @return string
+     */
+    public function logoutSession(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -264,7 +304,40 @@ class Wppconnect
      */
     public function getMediaByMessage(array $data): string
     {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'messageId');
+    }
+
+    /**
+     * Status Session
+     *
+     * @param array $data
+     * @return string
+     */
+    public function statusSession(array $data): string
+    {
         return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Qrcode Session
+     *
+     * @param array $data
+     * @return string
+     */
+    public function qrcodeSession(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Subscribe Presence
+     *
+     * @param array $data
+     * @return string
+     */
+    public function subscribePresence(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
     }
 
     /**
@@ -290,12 +363,34 @@ class Wppconnect
     }
 
     /**
+     * Send Reply
+     *
+     * @param array $data
+     * @return string
+     */
+    public function sendReply(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
      * Send File
      *
      * @param array $data
      * @return string
      */
     public function sendFile(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data, 'send-file');
+    }
+
+    /**
+     * Send File Base64
+     *
+     * @param array $data
+     * @return string
+     */
+    public function sendFileBase64(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -323,17 +418,6 @@ class Wppconnect
     }
 
     /**
-     * Send File Base64
-     *
-     * @param array $data
-     * @return string
-     */
-    public function sendFileBase64(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
      * Send Link Preview
      *
      * @param array $data
@@ -351,6 +435,17 @@ class Wppconnect
      * @return string
      */
     public function sendLocation(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Send Mentioned
+     *
+     * @param array $data
+     * @return string
+     */
+    public function sendMentioned(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -396,7 +491,7 @@ class Wppconnect
      */
     public function groupMembers(array $data): string
     {
-        return $this->sendCurl('post', __FUNCTION__, $data);
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
 
     /**
@@ -451,7 +546,7 @@ class Wppconnect
      */
     public function groupAdmins(array $data): string
     {
-        return $this->sendCurl('post', __FUNCTION__, $data);
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
 
     /**
@@ -462,118 +557,104 @@ class Wppconnect
      */
     public function groupInviteLink(array $data): string
     {
-        return $this->sendCurl('post', __FUNCTION__, $data);
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
 
     /**
-     * Change Privacy Group
+     * All Broadcast List
      *
      * @param array $data
      * @return string
      */
-    public function changePrivacyGroup(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-
-    /**
-     * Change Username
-     *
-     * @param array $data
-     * @return string
-     */
-    public function changeUsername(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Show All Contacts
-     *
-     * @param array $data
-     * @return string
-     */
-    public function showAllContacts(array $data): string
+    public function allBroadcastList(array $data): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
 
     /**
-     * Show All Chats
+     * All Groups
      *
      * @param array $data
      * @return string
      */
-    public function showAllChats(array $data): string
+    public function allGroups(array $data): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
 
     /**
-     * Show All Groups
+     * Group Info From Invite Link
      *
      * @param array $data
      * @return string
      */
-    public function showAllGroups(array $data): string
+    public function groupInfoFromInviteLink(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
 
     /**
-     * Show All Blocklist
+     * Group Members Ids
      *
      * @param array $data
      * @return string
      */
-    public function showAllBlocklist(array $data): string
+    public function groupMembersIds(array $data): string
     {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-
-    /**
-     * Get Chat By Id
-     *
-     * @param array $data
-     * @return string
-     */
-    public function getChatById(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
 
     /**
-     * Get Battery Level
+     * Group Description
      *
      * @param array $data
      * @return string
      */
-    public function getBatteryLevel(array $data): string
+    public function groupDescription(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
 
     /**
-     * Get Delete Chat
+     * Group Property
      *
      * @param array $data
      * @return string
      */
-    public function deleteChat(array $data): string
+    public function groupProperty(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
 
-
     /**
-     * Get Clear Chat
+     * Group Subject
      *
      * @param array $data
      * @return string
      */
-    public function clearChat(array $data): string
+    public function groupSubject(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Messages Admins Only
+     *
+     * @param array $data
+     * @return string
+     */
+    public function messagesAdminsOnly(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Group Pic
+     *
+     * @param array $data
+     * @return string
+     */
+    public function groupPic(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -590,57 +671,34 @@ class Wppconnect
     }
 
     /**
+     * Get Clear Chat
+     *
+     * @param array $data
+     * @return string
+     */
+    public function clearChat(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Get Delete Chat
+     *
+     * @param array $data
+     * @return string
+     */
+    public function deleteChat(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
      * Delete Message
      *
      * @param array $data
      * @return string
      */
     public function deleteMessage(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Mark Unseen Contact
-     *
-     * @param array $data
-     * @return string
-     */
-    public function markUnseenContact(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Block Contact
-     *
-     * @param array $data
-     * @return string
-     */
-    public function blockContact(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-
-    /**
-     * Unblock Contact
-     *
-     * @param array $data
-     * @return string
-     */
-    public function unblockContact(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Get Host Device
-     *
-     * @param array $data
-     * @return string
-     */
-    public function getHostDevice(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -657,6 +715,138 @@ class Wppconnect
     }
 
     /**
+     * All Chats
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allChats(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * All Chats With Messages
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allChatsWithMessages(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * All Messages In Chat
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allMessagesInChat(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * All Messages New Messages
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allNewMessages(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Unread Messages
+     *
+     * @param array $data
+     * @return string
+     */
+    public function unreadMessages(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * All Unread Messages
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allUnreadMessages(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Chat By Id
+     *
+     * @param array $data
+     * @return string
+     */
+    public function chatById(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Chat Is Online
+     *
+     * @param array $data
+     * @return string
+     */
+    public function chatIsOnline(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Last Seen
+     *
+     * @param array $data
+     * @return string
+     */
+    public function lastSeen(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * List Mutes
+     *
+     * @param array $data
+     * @return string
+     */
+    public function listMutes(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'type');
+    }
+
+    /**
+     * Load Messages In Chat
+     *
+     * @param array $data
+     * @return string
+     */
+    public function loadMessagesInChat(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Mark Unseen
+     *
+     * @param array $data
+     * @return string
+     */
+    public function markUnseen(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
      * Pin Chat
      *
      * @param array $data
@@ -668,12 +858,276 @@ class Wppconnect
     }
 
     /**
+     * Contact Vcard
+     *
+     * @param array $data
+     * @return string
+     */
+    public function contactVcard(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Send Mute
+     *
+     * @param array $data
+     * @return string
+     */
+    public function sendMute(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Send Seen
+     *
+     * @param array $data
+     * @return string
+     */
+    public function sendSeen(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Chat State
+     *
+     * @param array $data
+     * @return string
+     */
+    public function chatState(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Temporary Messages
+     *
+     * @param array $data
+     * @return string
+     */
+    public function temporaryMessages(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Typing
+     *
+     * @param array $data
+     * @return string
+     */
+    public function typing(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Star Message
+     *
+     * @param array $data
+     * @return string
+     */
+    public function starMessage(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Check Number Status
+     *
+     * @param array $data
+     * @return string
+     */
+    public function checkNumberStatus(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * All Contacts
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allContacts(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Contact
+     *
+     * @param array $data
+     * @return string
+     */
+    public function contact(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Profile
+     *
+     * @param array $data
+     * @return string
+     */
+    public function profile(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Profile Pic
+     *
+     * @param array $data
+     * @return string
+     */
+    public function profilePic(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Profile Status
+     *
+     * @param array $data
+     * @return string
+     */
+    public function profileStatus(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Block Contact
+     *
+     * @param array $data
+     * @return string
+     */
+    public function blockContact(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Unblock Contact
+     *
+     * @param array $data
+     * @return string
+     */
+    public function unblockContact(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * BlockList
+     *
+     * @param array $data
+     * @return string
+     */
+    public function blocklist(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Get Battery Level
+     *
+     * @param array $data
+     * @return string
+     */
+    public function getBatteryLevel(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Host Device
+     *
+     * @param array $data
+     * @return string
+     */
+    public function hostDevice(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Change Privacy Group
+     *
+     * @param array $data
+     * @return string
+     */
+    public function changePrivacyGroup(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
      * Download Media
      *
      * @param array $data
      * @return string
      */
     public function downloadMedia(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * kill Service Workier
+     *
+     * @param array $data
+     * @return string
+     */
+    public function killServiceWorkier(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Restart Service
+     *
+     * @param array $data
+     * @return string
+     */
+    public function restartService(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Set Profile Pic
+     *
+     * @param array $data
+     * @return string
+     */
+    public function setProfilePic(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Set Profile Status
+     *
+     * @param array $data
+     * @return string
+     */
+    public function setProfileStatus(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Change Username
+     *
+     * @param array $data
+     * @return string
+     */
+    public function changeUsername(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }

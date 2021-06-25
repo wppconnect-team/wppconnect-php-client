@@ -1,47 +1,50 @@
 # WPPConnect Team
 ## _Wppconnect PHP Client_
 
-A simple API class PHP, providing easy access to wppconnect's endpoints.
+Um simples cliente PHP que proporciona acesso fácil aos endpoints do WPPConnect Server.
 
-## Requirements
+## Requisitos
 
-* PHP 7.0 or newer
+* PHP 7.0 ou superior.
 
-## Install
+## Configuração
 
-Simply Download the Release to install the API client class.
+Array associativo que será aplicado a todas as solicitações criadas pelo cliente.
 
-## Config
+Exemplo: 
 
-Associative array of Request Options, that are applied to every request, created by the client.
-
-Example:
 ``` php
 $this->options = [
     /**
-     * Configures a base URL for the client so that requests created using
-     * a relative URL are combined with the base_url
+      * URL do WPPConnect Server
      */
-    'base_url' => 'http://192.168.0.76:21465',
+    'base_url' => 'http://localhost:8081',
     
     /**
      * Secret Key
-     * See: https://github.com/wppconnect-team/wppconnect-server#secret-key
+     * Veja: https://github.com/wppconnect-team/wppconnect-server#secret-key
      */
     'secret_key' => 'MYKeYPHP',
 
     /**
-     * Your Session Name
+     * Nome da Session
      */
     'session' => 'mySession'
 ];
 ```
 
-## Usage
+## Uso
 
 ``` php
+namespace Wppconnect;
+
+session_start();
+
+# Use require or autoload
+require('wppconnect.php');
+
 $wppconnect = new Wppconnect([
-    'base_url' => 'http://192.168.0.76:21465',
+    'base_url' => 'http://localhost:8081',
     'secret_key' => 'MYKeYPHP',
     'session' => 'mySession',
 ]);
@@ -57,8 +60,8 @@ if (!isset($_SESSION['token'])) :
     ]);
     $response = $wppconnect->toArray($response);
 
-    if ($response['status'] == 'Success') :
-        $_SESSION['token'] = $response['token'];
+    if (isset($response['status']) and $response['status'] == 'Success') :
+            $_SESSION['token'] = $response['token'];
     endif;
 
     #debug
@@ -66,19 +69,16 @@ if (!isset($_SESSION['token'])) :
 endif;
  ```
  ``` php
-# Function: Start Session
-# /api/:session/start-session
+ # Function: Start Session
+ # /api/:session/start-session
 
-if (isset($_SESSION['token']) and !isset($_SESSION['init'])) :
+if (!isset($_SESSION['token'])) :
     $response = $wppconnect->startSession([
         'session' => $wppconnect->options['session'],
-    ]);
+        'webhook' => null,
+        'waitQrCode' => true
+        ]);
     $response = $wppconnect->toArray($response);
-
-    if ($response['status'] == 'CONNECTED') :
-        $_SESSION['init'] = true;
-    endif;
-
     #debug
     $wppconnect->debug($response);
 endif;
@@ -87,9 +87,24 @@ endif;
 # Function: Check Connection Session
 # /api/:session/check-connection-session
 
-if (isset($_SESSION['token']) and isset($_SESSION['init'])) :
+if (!isset($_SESSION['token'])) :    
     $response = $wppconnect->checkConnectionSession([
         'session' => $wppconnect->options['session'],
+    ]);
+    $response = $wppconnect->toArray($response);
+    $wppconnect->debug($response);
+endif; 
+ ```
+ ``` php
+# Function: Send Message
+# /api/:session/send-message
+
+if (!isset($_SESSION['token'])) :      
+    $response = $wppconnect->sendMessage([
+        'session' => $wppconnect->options['session'],
+        'phone' => '5500000000000',
+        'message' => 'Opa, funciona mesmo!',
+        'isGroup' => false
     ]);
     $response = $wppconnect->toArray($response);
 
@@ -98,31 +113,16 @@ if (isset($_SESSION['token']) and isset($_SESSION['init'])) :
 endif;
  ```
  ``` php
-# Function: Send Message
-# /api/:session/send-message
-
-if (isset($_SESSION['token']) and isset($_SESSION['init'])) :
-    $response = $wppconnect->sendMessage([
-        'session' => $wppconnect->options['session'],
-        'phone' => '0000000000000',
-        'message' => 'Opa, funciona mesmo!'
-    ]);
-    $response = $wppconnect->toArray($response);
-
-    #debug
-    $wppconnect->debug($response);
-endif;
- ```
- 
-  ``` php
 # Function: Send File Base64
 # /api/:session/send-file-base64
 
-if (isset($_SESSION['token']) and isset($_SESSION['init'])) :
+if (!isset($_SESSION['token'])) :     
     $response = $wppconnect->sendFileBase64([
         'session' => $wppconnect->options['session'],
-        'phone' => '0000000000000',
-        'base64' => 'data:image/jpg;base64,' . base64_encode(file_get_contents('xpto.jpg'))
+        'phone' => '5500000000000',
+        'filename' => 'Xpto',
+        'base64' => $wppconnect->fileToBase64('xpto.jpg'),
+        'isGroup' => false
     ]);
     $response = $wppconnect->toArray($response);
 
@@ -135,14 +135,14 @@ endif;
 # Function: Send Link Preview
 # /api/:session/send-link-preview
 
-if (isset($_SESSION['token']) and isset($_SESSION['init'])) :
+if (!isset($_SESSION['token'])) :  
     $response = $wppconnect->sendLinkPreview([
         'session' => $wppconnect->options['session'],
-        'phone' => '0000000000000',
+        'phone' => '5500000000000',
         'url' => 'https://github.com/wppconnect-team',
-        'caption' => 'WppConnectTeam'
+        'caption' => 'WppConnectTeam',
+        'isGroup' => false
     ]);
-
     $response = $wppconnect->toArray($response);
 
     #debug
@@ -153,85 +153,128 @@ endif;
 # Function: Send Location
 # /api/:session/send-location
 
-if (isset($_SESSION['token']) and isset($_SESSION['init'])) :
+if (!isset($_SESSION['token'])) :  
     $response = $wppconnect->sendLocation([
         'session' => $wppconnect->options['session'],
-        'phone' => '0000000000000',
+        'phone' => '5500000000000',
         'lat' => '-23.5489',
-        'long' => '-46.6388',
+        'lng' => '-46.6388',
         'title' => 'Cidade de São Paulo'
+        'isGroup' => false
     ]);
-
     $response = $wppconnect->toArray($response);
-
+    
     #debug
     $wppconnect->debug($response);
 endif;
  ```
 
-## Functions/methods supported (Up to now)
+## Funções/Métodos Suportados (até este momento) 
 
-This class is still in development.
-See [here](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) all the wppconnect-server functions. 
+Este cliente PHP ainda está em desenvolvimento. 
+veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) todos os endpoints do WPPConnect Server. 
 
-### Sessions
-- generateToken([:session, :secret_key]) 
-- startSession([:session]) 
-- closeSession([:session]) 
-- checkConnectionSession([:session]) 
-- showAllSessions([:session]) 
-- getMediaByMessage([:session, :messageId])
+### Token
+- generateToken([:session,:secret_key]) 
 
-### Message
-- sendMessage([:session, :phone, :message]) 
-- sendFileBase64([:session, :phone, :base64]) 
-- sendLinkPreview([:session, :phone, :url, :caption]) 
-- sendLocation([:session, :phone, :lat, :long, :title]) 
-- sendImage([:session, :phone, :caption, :path]) 
-- sendStatus([:session, :message]) 
+### Session
+- startAll([:secret_key])
+- showAllSessions([:session]);
+- startSession([:session,:webhook,:waitQrCode]);
+- closeSession([:session]);
+- LogoutSession([:session]);
+- checkConnectionSession([:session]);
+- statusSession([:session]);
+- qrcodeSession([:session]);
 
-### Group
-- createGroup([:session, :participants[:phone, :phone, ...], :name]) 
+### Mensagem
+- sendMessage([:session,:phone,:message,:isGroup]);
+- sendReply([:session,:phone,:message,:messageId,:isGroup]);
+- sendFileBase64([:session,:phone,:filename:base64:isGroup]);
+- sendStatus([:session,:message,:isGroup]);
+- sendLinkPreview([:session,:phone,:url,:caption,:isGroup]);
+- sendLocation([:session,:phone,:lat,:lng,:title,:isGroup]);
+- sendMentioned([:session,:phone,:message,:mentioned,:isGroup]);
 
-### Other
-- showAllContacts([:session]) 
-- showAllChats([:session]) 
-- showAllGroups([:session]) 
-- showAllBlocklist([:session]) 
-- getChatById([:session, :phone]) 
-- blockContact([:session, :phone]) 
-- unblockContact([:session, :phone]) 
-- archiveChat([:session, :phone]) 
-- pinChat([:session, :phone, :state]) 
-- deleteMessage([:session, :phone]) 
-- forwardMessages([:session, :phone, :messageId]) 
-- markUnseenContact([:session, :phone]) 
+### Grupo
+- createGroup([:session,:participants[:phone,:phone,...],:name]);
+- leaveGroup([:session,:groupId]);
+- joinCode([:session,:inviteCode]);
+- groupMembers([:session,:groupId]);
+- addParticipantGroup([:session,:groupId,:phone]);
+- removeParticipantGroup([:session,:groupId,:phone,]);
+- promoteParticipantGroup([:session,:groupId,:phone]);
+- demoteParticipantGroup([:session,:groupId,:phone]);
+- groupAdmins([:session,:groupId]);
+- groupInviteLink([:session,:groupId]);
+- allGroups([:session]);
+- groupInfoFromInviteLink([:session,:inviteCode]);
+- groupMembersIds([:session,:groupId]);
+- groupDescription([:session,:groupId,:description]);
+- groupProperty([:session,:groupId,:property,:value]);
+- groupSubject([:session,:groupId,:title]);
+- messagesAdminsOnly([:session,:groupId,:value]);
+
+### Chat
+- archiveChat([:session,:phone,:isGroup]);
+- clearChat([:session,:phone,:isGroup]);
+- deleteChat([:session,:phone]);
+- deleteMessage([:session,:phone,:messageId]);
+- forwardMessages([:session,:phone,:messageId]);
+- allChats([:session]);
+- allChatsWithMessages([:session]);
+- allMessagesInChat([:session,:phone]);
+- allNewMessages([:session,:phone]);
+- unreadMessages([:session]);
+- allUnreadMessages([:session]);
+- chatById([:session,:phone]);
+- chatIsOnline([:session,:phone]);
+- lastSeen([:session,:phone]);
+- listMutes([:session,:type]);
+- loadMessagesInChat([:session,:phone]);
+- markUnseen([:session,:phone]);
+- pinChat([:session,:phone,:state,:isGroup]);
+- contactVcard([:session,:phone,:contactsId]);
+- sendMute([:session,:phone,:time,:type]);
+- sendSeen([:session,:phone]);
+- chatState([:session,:phone,:chatstate]);
+- typing([:session,:phone,:value,:isGroup]);
+- starMessage([:session,:messageId,:star]);
+
+### Contatos
+- checkNumberStatus([:session,:phone]);
+- allContacts([:session]);
+- contact([:session,:phone]);
+- profile([:session,:phone,]);
+- profilePic([:session,:phone]);
+- profileStatus([:session,:phone]);
+- blockContact([:session,:phone]);
+- unblockContact([:session,:phone]);
+- blocklist([:session]);
+- setProfileStatus([:session,:status]);
+- changeUsername([:session,:name]);
 
 ### Device
-- getBatteryLevel([:session]) 
-- getHostDevice([:session]) 
+- getBatteryLevel([:session]);
+- hostDevice([:session]);
 
-## Webhook Test
+### Outros
+- allBroadcastList([:session]);
+- subscribePresence([:session,:isGroup,:all]);
+- killServiceWorkier([:session]);
+- restartService([:session]);
 
-A helper [class](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) to log and get the Wppconnect webhook request.
+## Webhook
 
-### Configuration
-This server use environment variables to define some options, that can be:
+Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) para registrar/obter a solicitação/respostas do webhook WPPConnect.
 
-* `WEBHOOK_URL` - The webhook url to receive WhatsApp events (Messages, ACKs, States)
-
-As a alternative, you can define theses options using the `.env` file.
-To do that, you can make a copy of `.env.example` (`cp .env.example .env`) and change the values
-
-### Usage
+### Uso
 
 ``` php
+
+# Use require or autoload
+require('util/webhook.php');
+
 $webhook = new Webhook();
 $requestData = $webhook->getRequest();
 ```
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-[manual]: http://guzzle.readthedocs.org/en/latest/
