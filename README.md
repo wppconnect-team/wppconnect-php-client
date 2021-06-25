@@ -38,8 +38,6 @@ $this->options = [
 ``` php
 namespace Wppconnect;
 
-session_start();
-
 # Use require or autoload
 require('wppconnect.php');
 
@@ -244,6 +242,7 @@ Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blo
 ### Uso
 
 ``` php
+namespace Wppconnect;
 
 # Use require or autoload
 require('util/webhook.php');
