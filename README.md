@@ -266,7 +266,7 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 
 ## Webhook
 
-Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) para registrar/obter as solicitações/respostas do webhook WPPConnect.
+Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/src/webhook.php) para registrar/obter as solicitações/respostas do webhook WPPConnect.
 
 ### Uso
 
