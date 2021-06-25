@@ -9,7 +9,7 @@ Um simples cliente PHP que proporciona acesso fácil aos endpoints do WPPConnect
 
 ## Configuração
 
-Configuração aplicada a todas as solicitações criadas pelo cliente.
+Array associativo que será aplicado a todas as solicitações criadas pelo cliente.
 
 Exemplo: 
 
@@ -52,127 +52,100 @@ $wppconnect = new Wppconnect([
  ``` php
 # Function: Generated Token
 # /api/:session/generate-token
-
-if (!isset($_SESSION['token'])) :
-    $response = $wppconnect->generateToken([
-        'session' => $wppconnect->options['session'],
-        'secret_key' => $wppconnect->options['secret_key']
-    ]);
-    $response = $wppconnect->toArray($response);
-
-    if (isset($response['status']) and $response['status'] == 'Success') :
-            $_SESSION['token'] = $response['token'];
-    endif;
-
-    #debug
-    $wppconnect->debug($response);
-endif;
+$response = $wppconnect->generateToken([
+    'session' => $wppconnect->options['session'],
+    'secret_key' => $wppconnect->options['secret_key']
+]);
+$response = $wppconnect->toArray($response);
+#debug
+$wppconnect->debug($response);
  ```
  ``` php
  # Function: Start Session
  # /api/:session/start-session
-
-if (!isset($_SESSION['token'])) :
-    $response = $wppconnect->startSession([
-        'session' => $wppconnect->options['session'],
-        'webhook' => null,
-        'waitQrCode' => true
-        ]);
-    $response = $wppconnect->toArray($response);
-    #debug
-    $wppconnect->debug($response);
-endif;
+$response = $wppconnect->startSession([
+    'session' => $wppconnect->options['session'],
+    'webhook' => null,
+    'waitQrCode' => true
+    ]);
+$response = $wppconnect->toArray($response);
+#debug
+$wppconnect->debug($response);
  ```
  ``` php
 # Function: Check Connection Session
 # /api/:session/check-connection-session
+$response = $wppconnect->checkConnectionSession([
+    'session' => $wppconnect->options['session'],
+]);
+$response = $wppconnect->toArray($response);
+#debug
+$wppconnect->debug($response);
 
-if (!isset($_SESSION['token'])) :    
-    $response = $wppconnect->checkConnectionSession([
-        'session' => $wppconnect->options['session'],
-    ]);
-    $response = $wppconnect->toArray($response);
-    $wppconnect->debug($response);
-endif; 
  ```
  ``` php
 # Function: Send Message
-# /api/:session/send-message
+# /api/:session/send-message    
+$response = $wppconnect->sendMessage([
+    'session' => $wppconnect->options['session'],
+    'phone' => '5500000000000',
+    'message' => 'Opa, funciona mesmo!',
+    'isGroup' => false
+]);
+$response = $wppconnect->toArray($response);
+#debug
+$wppconnect->debug($response);
 
-if (!isset($_SESSION['token'])) :      
-    $response = $wppconnect->sendMessage([
-        'session' => $wppconnect->options['session'],
-        'phone' => '5500000000000',
-        'message' => 'Opa, funciona mesmo!',
-        'isGroup' => false
-    ]);
-    $response = $wppconnect->toArray($response);
-
-    #debug
-    $wppconnect->debug($response);
-endif;
  ```
  ``` php
 # Function: Send File Base64
-# /api/:session/send-file-base64
-
-if (!isset($_SESSION['token'])) :     
-    $response = $wppconnect->sendFileBase64([
-        'session' => $wppconnect->options['session'],
-        'phone' => '5500000000000',
-        'filename' => 'Xpto',
-        'base64' => $wppconnect->fileToBase64('xpto.jpg'),
-        'isGroup' => false
-    ]);
-    $response = $wppconnect->toArray($response);
-
-    #debug
-    $wppconnect->debug($response);
-endif;
+# /api/:session/send-file-base64 
+$response = $wppconnect->sendFileBase64([
+    'session' => $wppconnect->options['session'],
+    'phone' => '5500000000000',
+    'filename' => 'Xpto',
+    'base64' => $wppconnect->fileToBase64('xpto.jpg'),
+    'isGroup' => false
+]);
+$response = $wppconnect->toArray($response);
+#debug
+$wppconnect->debug($response);
  ```
  
 ``` php
 # Function: Send Link Preview
 # /api/:session/send-link-preview
-
-if (!isset($_SESSION['token'])) :  
-    $response = $wppconnect->sendLinkPreview([
-        'session' => $wppconnect->options['session'],
-        'phone' => '5500000000000',
-        'url' => 'https://github.com/wppconnect-team',
-        'caption' => 'WppConnectTeam',
-        'isGroup' => false
-    ]);
-    $response = $wppconnect->toArray($response);
-
-    #debug
-    $wppconnect->debug($response);
-endif;
+$response = $wppconnect->sendLinkPreview([
+    'session' => $wppconnect->options['session'],
+    'phone' => '5500000000000',
+    'url' => 'https://github.com/wppconnect-team',
+    'caption' => 'WppConnectTeam',
+    'isGroup' => false
+]);
+$response = $wppconnect->toArray($response);
+#debug
+$wppconnect->debug($response);
  ```
  ``` php
 # Function: Send Location
-# /api/:session/send-location
-
-if (!isset($_SESSION['token'])) :  
-    $response = $wppconnect->sendLocation([
-        'session' => $wppconnect->options['session'],
-        'phone' => '5500000000000',
-        'lat' => '-23.5489',
-        'lng' => '-46.6388',
-        'title' => 'Cidade de São Paulo'
-        'isGroup' => false
-    ]);
-    $response = $wppconnect->toArray($response);
-    
-    #debug
-    $wppconnect->debug($response);
-endif;
+# /api/:session/send-location 
+$response = $wppconnect->sendLocation([
+    'session' => $wppconnect->options['session'],
+    'phone' => '5500000000000',
+    'lat' => '-23.5489',
+    'lng' => '-46.6388',
+    'title' => 'Cidade de São Paulo'
+    'isGroup' => false
+]);
+$response = $wppconnect->toArray($response);
+#debug
+$wppconnect->debug($response);
  ```
 
 ## Funções/Métodos Suportados (até este momento) 
 
-Este cliente está em desenvolvimento. 
-Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) todos os endpoints do WPPConnect Server. 
+Este cliente PHP ainda está em desenvolvimento. 
+veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) todos os endpoints do WPPConnect Server. 
 
 ### Token
 - generateToken([:session,:secret_key]) 
@@ -266,7 +239,7 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 
 ## Webhook
 
-Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/src/webhook.php) para registrar/obter as solicitações/respostas do webhook WPPConnect.
+Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) para registrar/obter a solicitação/respostas do webhook WPPConnect.
 
 ### Uso
 
@@ -278,6 +251,3 @@ require('util/webhook.php');
 $webhook = new Webhook();
 $requestData = $webhook->getRequest();
 ```
-
-## Postman
-Acesse o [Postman Collection do WPPConnect](https://www.postman.com/hbdbim/workspace/wppconnect-server) com todos os endpoints.
