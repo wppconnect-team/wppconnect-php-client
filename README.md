@@ -9,7 +9,7 @@ Um simples cliente PHP que proporciona acesso fácil aos endpoints do WPPConnect
 
 ## Configuração
 
-Array associativo que será aplicado a todas as solicitações criadas pelo cliente.
+Configuração aplicada a todas as solicitações criadas pelo cliente.
 
 Exemplo: 
 
@@ -171,8 +171,8 @@ endif;
 
 ## Funções/Métodos Suportados (até este momento) 
 
-Este cliente PHP ainda está em desenvolvimento. 
-veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) todos os endpoints do WPPConnect Server. 
+Este cliente está em desenvolvimento. 
+Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/routes/index.js) todos os endpoints do WPPConnect Server. 
 
 ### Token
 - generateToken([:session,:secret_key]) 
@@ -266,7 +266,7 @@ veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 
 ## Webhook
 
-Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) para registrar/obter a solicitação/respostas do webhook WPPConnect.
+Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) para registrar/obter as solicitações/respostas do webhook WPPConnect.
 
 ### Uso
 
