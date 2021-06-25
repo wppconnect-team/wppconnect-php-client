@@ -279,16 +279,5 @@ $webhook = new Webhook();
 $requestData = $webhook->getRequest();
 ```
 
-### Uso
-
-``` php
-
-# Use require or autoload
-require('util/webhook.php');
-
-$webhook = new Webhook();
-$requestData = $webhook->getRequest();
-```
-
 ## Postman
 Acesse o [Postman Collection do WPPConnect](https://www.postman.com/hbdbim/workspace/wppconnect-server) com todos os endpoints.
