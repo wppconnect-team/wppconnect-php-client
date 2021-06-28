@@ -155,6 +155,7 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 - closeSession([:session]);
 - logoutSession([:session]);
 - checkConnectionSession([:session]);
+- getMediaByMessage([:session,:messageId]);
 - statusSession([:session]);
 - qrcodeSession([:session]);
 
