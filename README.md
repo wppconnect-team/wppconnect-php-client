@@ -155,7 +155,6 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 - closeSession([:session]);
 - logoutSession([:session]);
 - checkConnectionSession([:session]);
-- getMediaByMessage([:session,:messageId]);
 - statusSession([:session]);
 - qrcodeSession([:session]);
 
@@ -212,6 +211,7 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 - chatState([:session,:phone,:chatstate]);
 - typing([:session,:phone,:value,:isGroup]);
 - starMessage([:session,:messageId,:star]);
+- getMediaByMessage([:session,:messageId]);
 
 ### Contatos
 - checkNumberStatus([:session,:phone]);
