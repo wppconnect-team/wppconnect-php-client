@@ -561,6 +561,17 @@ class Wppconnect
     }
 
     /**
+     * Group Revoke Link
+     *
+     * @param array $data
+     * @return string
+     */
+    public function groupRevokeLink(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
+    }
+
+    /**
      * All Broadcast List
      *
      * @param array $data

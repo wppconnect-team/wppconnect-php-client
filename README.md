@@ -178,6 +178,7 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 - demoteParticipantGroup([:session,:groupId,:phone]);
 - groupAdmins([:session,:groupId]);
 - groupInviteLink([:session,:groupId]);
+- groupRevokeLink([:session,:groupId]);
 - allGroups([:session]);
 - groupInfoFromInviteLink([:session,:inviteCode]);
 - groupMembersIds([:session,:groupId]);
