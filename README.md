@@ -47,6 +47,7 @@ $wppconnect = new Wppconnect([
     'session' => 'mySession',
 ]);
  ```
+ 
  ``` php
 # Function: Generated Token
 # /api/:session/generate-token
