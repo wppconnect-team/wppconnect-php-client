@@ -5,7 +5,7 @@ Um simples cliente PHP que proporciona acesso fácil aos endpoints do WPPConnect
 
 ## Requisitos
 
-* PHP 7.0 ou superior.
+* PHP 7.4 ou superior.
 
 ## Configuração
 

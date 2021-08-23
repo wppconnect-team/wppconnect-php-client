@@ -1,0 +1,27 @@
+{
+    "name": "wppconnect-team/wppconnect-php-client",
+    "description": "Um simples cliente PHP que proporciona acesso fácil aos endpoints do WPPConnect Server.",
+    "homepage": "https://github.com/wppconnect-team/wppconnect-php-client",
+    "keywords": [
+        "php",
+        "rest client",
+        "wppconnect"
+    ],
+    "authors": [
+        {
+            "name": "bgastaldi"
+        }
+    ],
+    "license": "Apache-2.0",
+    "type": "libr",
+    "require": {
+        "php": ">=7.4",
+        "squizlabs/php_codesniffer": "^3.6"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "WPPConnect\\": "vendor/wppconnect/src"
+        }
+    }
+}

@@ -7,7 +7,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,72 +16,41 @@
  * limitations under the License.
  */
 
-namespace Wppconnect;
+declare(strict_types=1);
 
-class Wppconnect
+namespace WPPConnect\Http;
+
+class Request
 {
-
 
     public function __construct(array $options = [])
     {
 
         $this->options = [
             /**
-             * Configures a base URL for the client so that requests created using
+             * Configure a base URL for the client so that requests created using
              * a relative URL are combined with the base_url
              */
             'base_url' => $options['base_url'],
 
-            /**
+             /**
+             * Session
+             * Configure your session name
+             */
+            'session' => $options['session'],
+
+             /**
              * Secret Key
              * See: https://github.com/wppconnect-team/wppconnect-server#secret-key
              */
             'secret_key' => $options['secret_key'],
 
-            /**
-             * Your Session Name
+             /**
+             * Token
+             * See: https://github.com/wppconnect-team/wppconnect-server#generate-token
              */
-            'session' => $options['session'],
+            'token' => null
         ];
-    }
-
-    /**
-     * Debug function
-     * Like laravel dd
-     *
-     * @param array $array
-     * @return string
-     */
-    public function debug(array $array): void
-    {
-        echo "<pre>";
-        print_r($array);
-        echo "</pre>";
-        die;
-    }
-
-    /**
-     * Image to Base64
-     *
-     * @param string $imagePath
-     * @return string
-     */
-    public function fileToBase64(string $imagePath): string
-    {
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        return 'data:' . $finfo->file($imagePath) . ';base64,' . base64_encode(file_get_contents($imagePath));
-    }
-
-  /**
-   * toArray function
-   *
-   * @param object $content
-   * @return array
-   */
-    public function toArray(string $content): array
-    {
-        $content =  json_decode($content, true);
-        return (is_array($content)) ?  $content : ['status' => 'Error', 'message' => $content];
     }
 
     /**
@@ -155,6 +124,7 @@ class Wppconnect
      * @param string $method
      * @param string $function
      * @param array $data
+     * @param string $param
      * @return string
      */
     protected function sendCurl(string $method, string $function, array $data, string $param = null): string
@@ -178,8 +148,8 @@ class Wppconnect
          * Header define
          */
         $header = ['Content-Type: application/json','Cache-control: no-cache'];
-        if (isset($_SESSION['token'])) :
-            array_push($header, 'Authorization: Bearer ' . $_SESSION['token']);
+        if (isset($this->options['token'])) :
+            array_push($header, 'Authorization: Bearer ' .  $this->options['token']);
         endif;
 
         /**
@@ -253,39 +223,6 @@ class Wppconnect
     }
 
     /**
-     * Start Session
-     *
-     * @param array $data
-     * @return string
-     */
-    public function startSession(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Close Session
-     *
-     * @param array $data
-     * @return string
-     */
-    public function closeSession(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Logout Session
-     *
-     * @param array $data
-     * @return string
-     */
-    public function logoutSession(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
      * Check Connection Session
      *
      * @param array $data
@@ -328,6 +265,40 @@ class Wppconnect
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
+
+    /**
+     * Start Session
+     *
+     * @param array $data
+     * @return string
+     */
+    public function startSession(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Close Session
+     *
+     * @param array $data
+     * @return string
+     */
+    public function closeSession(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Logout Session
+     *
+     * @param array $data
+     * @return string
+     */
+    public function logoutSession(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
 
     /**
      * Subscribe Presence
@@ -451,6 +422,95 @@ class Wppconnect
     }
 
     /**
+     * Send Buttons
+     *
+     * @param array $data
+     * @return string
+     */
+    public function sendButtons(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * All Broadcast List
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allBroadcastList(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * All Groups
+     *
+     * @param array $data
+     * @return string
+     */
+    public function allGroups(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+
+    /**
+     * Group Members
+     *
+     * @param array $data
+     * @return string
+     */
+    public function groupMembers(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
+    }
+
+    /**
+     * Group Admins
+     *
+     * @param array $data
+     * @return string
+     */
+    public function groupAdmins(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
+    }
+
+    /**
+     * Group Invite Link
+     *
+     * @param array $data
+     * @return string
+     */
+    public function groupInviteLink(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
+    }
+
+    /**
+     * Group Revoke Link
+     *
+     * @param array $data
+     * @return string
+     */
+    public function groupRevokeLink(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
+    }
+
+    /**
+     * Group Members Ids
+     *
+     * @param array $data
+     * @return string
+     */
+    public function groupMembersIds(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
+    }
+
+    /**
      * Create Group
      *
      * @param array $data
@@ -481,17 +541,6 @@ class Wppconnect
     public function joinCode(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Group Members
-     *
-     * @param array $data
-     * @return string
-     */
-    public function groupMembers(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
 
     /**
@@ -539,61 +588,6 @@ class Wppconnect
     }
 
     /**
-     * Group Admins
-     *
-     * @param array $data
-     * @return string
-     */
-    public function groupAdmins(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
-    }
-
-    /**
-     * Group Invite Link
-     *
-     * @param array $data
-     * @return string
-     */
-    public function groupInviteLink(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
-    }
-
-    /**
-     * Group Revoke Link
-     *
-     * @param array $data
-     * @return string
-     */
-    public function groupRevokeLink(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
-    }
-
-    /**
-     * All Broadcast List
-     *
-     * @param array $data
-     * @return string
-     */
-    public function allBroadcastList(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data);
-    }
-
-    /**
-     * All Groups
-     *
-     * @param array $data
-     * @return string
-     */
-    public function allGroups(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data);
-    }
-
-    /**
      * Group Info From Invite Link
      *
      * @param array $data
@@ -602,17 +596,6 @@ class Wppconnect
     public function groupInfoFromInviteLink(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Group Members Ids
-     *
-     * @param array $data
-     * @return string
-     */
-    public function groupMembersIds(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
 
     /**
@@ -671,56 +654,12 @@ class Wppconnect
     }
 
     /**
-     * Archive Chat
+     * Change Privacy Group
      *
      * @param array $data
      * @return string
      */
-    public function archiveChat(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Get Clear Chat
-     *
-     * @param array $data
-     * @return string
-     */
-    public function clearChat(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Get Delete Chat
-     *
-     * @param array $data
-     * @return string
-     */
-    public function deleteChat(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Delete Message
-     *
-     * @param array $data
-     * @return string
-     */
-    public function deleteMessage(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * Forward Messages
-     *
-     * @param array $data
-     * @return string
-     */
-    public function forwardMessages(array $data): string
+    public function changePrivacyGroup(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -803,6 +742,17 @@ class Wppconnect
     }
 
     /**
+     * Message By Id
+     *
+     * @param array $data
+     * @return string
+     */
+    public function messageById(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
      * Chat Is Online
      *
      * @param array $data
@@ -844,6 +794,72 @@ class Wppconnect
     public function loadMessagesInChat(array $data): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Load Earlier Messages
+     *
+     * @param array $data
+     * @return string
+     */
+    public function loadEarlierMessages(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
+    }
+
+    /**
+     * Archive Chat
+     *
+     * @param array $data
+     * @return string
+     */
+    public function archiveChat(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Get Clear Chat
+     *
+     * @param array $data
+     * @return string
+     */
+    public function clearChat(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Get Delete Chat
+     *
+     * @param array $data
+     * @return string
+     */
+    public function deleteChat(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Delete Message
+     *
+     * @param array $data
+     * @return string
+     */
+    public function deleteMessage(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
+    }
+
+    /**
+     * Forward Messages
+     *
+     * @param array $data
+     * @return string
+     */
+    public function forwardMessages(array $data): string
+    {
+        return $this->sendCurl('post', __FUNCTION__, $data);
     }
 
     /**
@@ -1012,6 +1028,17 @@ class Wppconnect
     }
 
     /**
+     * BlockList
+     *
+     * @param array $data
+     * @return string
+     */
+    public function blocklist(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
      * Block Contact
      *
      * @param array $data
@@ -1023,6 +1050,28 @@ class Wppconnect
     }
 
     /**
+     * Get Business Profiles Products
+     *
+     * @param array $data
+     * @return string
+     */
+    public function getBusinessProfilesProducts(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
+     * Get Order By Message Id
+     *
+     * @param array $data
+     * @return string
+     */
+    public function getOderByMessageId(array $data): string
+    {
+        return $this->sendCurl('get', __FUNCTION__, $data);
+    }
+
+    /**
      * Unblock Contact
      *
      * @param array $data
@@ -1031,17 +1080,6 @@ class Wppconnect
     public function unblockContact(array $data): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
-    }
-
-    /**
-     * BlockList
-     *
-     * @param array $data
-     * @return string
-     */
-    public function blocklist(array $data): string
-    {
-        return $this->sendCurl('get', __FUNCTION__, $data);
     }
 
     /**
@@ -1064,17 +1102,6 @@ class Wppconnect
     public function hostDevice(array $data): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
-    }
-
-    /**
-     * Change Privacy Group
-     *
-     * @param array $data
-     * @return string
-     */
-    public function changePrivacyGroup(array $data): string
-    {
-        return $this->sendCurl('post', __FUNCTION__, $data);
     }
 
     /**

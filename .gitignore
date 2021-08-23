@@ -1,1 +1,7 @@
+.idea
+.DS_Store
+composer.lock
+vendor
+bin
+public
 node_modules
