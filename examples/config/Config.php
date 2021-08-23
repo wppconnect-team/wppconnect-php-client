@@ -33,7 +33,7 @@ return
                     'host' => 'localhost',
                     'dbname' => 'test',
                     'username' => 'root',
-                    'password' => 'pinguim',
+                    'password' => 'password',
                     'timeout' => 60,
                     'port' => 3306,
                 ],
@@ -46,7 +46,7 @@ return
                     'host' => 'localhost',
                     'dbname' => 'wppconnect',
                     'username' => 'postgres',
-                    'password' => 'pinguim',
+                    'password' => 'password',
                     'timeout' => 60,
                     'port' => 5432,
                 ]
