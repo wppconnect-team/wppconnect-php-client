@@ -49,7 +49,7 @@ class Request
              * Token
              * See: https://github.com/wppconnect-team/wppconnect-server#generate-token
              */
-            'token' => null
+            'token' => $options['token']
         ];
     }
 
@@ -195,7 +195,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function generateToken(array $data): string
+    public function generateToken(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -206,7 +206,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function startAll(array $data): string
+    public function startAll(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -217,7 +217,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function showAllSessions(array $data): string
+    public function showAllSessions(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -228,7 +228,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function checkConnectionSession(array $data): string
+    public function checkConnectionSession(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -239,7 +239,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function getMediaByMessage(array $data): string
+    public function getMediaByMessage(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'messageId');
     }
@@ -250,7 +250,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function statusSession(array $data): string
+    public function statusSession(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -261,7 +261,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function qrcodeSession(array $data): string
+    public function qrcodeSession(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -272,7 +272,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function startSession(array $data): string
+    public function startSession(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -283,7 +283,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function closeSession(array $data): string
+    public function closeSession(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -294,7 +294,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function logoutSession(array $data): string
+    public function logoutSession(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -306,7 +306,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function subscribePresence(array $data): string
+    public function subscribePresence(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -317,7 +317,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendMessage(array $data): string
+    public function sendMessage(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -328,7 +328,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendImage(array $data): string
+    public function sendImage(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -339,7 +339,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendReply(array $data): string
+    public function sendReply(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -350,7 +350,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendFile(array $data): string
+    public function sendFile(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data, 'send-file');
     }
@@ -361,7 +361,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendFileBase64(array $data): string
+    public function sendFileBase64(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -372,7 +372,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendVoice(array $data): string
+    public function sendVoice(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -383,7 +383,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendStatus(array $data): string
+    public function sendStatus(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -394,7 +394,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendLinkPreview(array $data): string
+    public function sendLinkPreview(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -405,7 +405,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendLocation(array $data): string
+    public function sendLocation(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -416,7 +416,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendMentioned(array $data): string
+    public function sendMentioned(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -427,7 +427,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendButtons(array $data): string
+    public function sendButtons(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -438,7 +438,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allBroadcastList(array $data): string
+    public function allBroadcastList(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -449,7 +449,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allGroups(array $data): string
+    public function allGroups(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -461,7 +461,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupMembers(array $data): string
+    public function groupMembers(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
@@ -472,7 +472,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupAdmins(array $data): string
+    public function groupAdmins(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
@@ -483,7 +483,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupInviteLink(array $data): string
+    public function groupInviteLink(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
@@ -494,7 +494,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupRevokeLink(array $data): string
+    public function groupRevokeLink(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
@@ -505,7 +505,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupMembersIds(array $data): string
+    public function groupMembersIds(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'groupId');
     }
@@ -516,7 +516,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function createGroup(array $data): string
+    public function createGroup(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -527,7 +527,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function leaveGroup(array $data): string
+    public function leaveGroup(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -538,7 +538,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function joinCode(array $data): string
+    public function joinCode(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -549,7 +549,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function addParticipantGroup(array $data): string
+    public function addParticipantGroup(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -560,7 +560,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function removeParticipantGroup(array $data): string
+    public function removeParticipantGroup(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -571,7 +571,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function promoteParticipantGroup(array $data): string
+    public function promoteParticipantGroup(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -582,7 +582,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function demoteParticipantGroup(array $data): string
+    public function demoteParticipantGroup(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -593,7 +593,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupInfoFromInviteLink(array $data): string
+    public function groupInfoFromInviteLink(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -604,7 +604,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupDescription(array $data): string
+    public function groupDescription(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -615,7 +615,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupProperty(array $data): string
+    public function groupProperty(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -626,7 +626,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupSubject(array $data): string
+    public function groupSubject(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -637,7 +637,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function messagesAdminsOnly(array $data): string
+    public function messagesAdminsOnly(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -648,7 +648,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function groupPic(array $data): string
+    public function groupPic(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -659,7 +659,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function changePrivacyGroup(array $data): string
+    public function changePrivacyGroup(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -670,7 +670,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allChats(array $data): string
+    public function allChats(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -681,7 +681,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allChatsWithMessages(array $data): string
+    public function allChatsWithMessages(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -692,7 +692,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allMessagesInChat(array $data): string
+    public function allMessagesInChat(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -703,7 +703,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allNewMessages(array $data): string
+    public function allNewMessages(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -714,7 +714,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function unreadMessages(array $data): string
+    public function unreadMessages(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -725,7 +725,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allUnreadMessages(array $data): string
+    public function allUnreadMessages(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -736,7 +736,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function chatById(array $data): string
+    public function chatById(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -747,7 +747,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function messageById(array $data): string
+    public function messageById(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -758,7 +758,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function chatIsOnline(array $data): string
+    public function chatIsOnline(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -769,7 +769,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function lastSeen(array $data): string
+    public function lastSeen(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -780,7 +780,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function listMutes(array $data): string
+    public function listMutes(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'type');
     }
@@ -791,7 +791,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function loadMessagesInChat(array $data): string
+    public function loadMessagesInChat(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -802,7 +802,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function loadEarlierMessages(array $data): string
+    public function loadEarlierMessages(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -813,7 +813,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function archiveChat(array $data): string
+    public function archiveChat(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -824,7 +824,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function clearChat(array $data): string
+    public function clearChat(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -835,7 +835,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function deleteChat(array $data): string
+    public function deleteChat(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -846,7 +846,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function deleteMessage(array $data): string
+    public function deleteMessage(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -857,7 +857,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function forwardMessages(array $data): string
+    public function forwardMessages(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -868,7 +868,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function markUnseen(array $data): string
+    public function markUnseen(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -879,7 +879,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function pinChat(array $data): string
+    public function pinChat(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -890,7 +890,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function contactVcard(array $data): string
+    public function contactVcard(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -901,7 +901,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendMute(array $data): string
+    public function sendMute(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -912,7 +912,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function sendSeen(array $data): string
+    public function sendSeen(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -923,7 +923,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function chatState(array $data): string
+    public function chatState(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -934,7 +934,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function temporaryMessages(array $data): string
+    public function temporaryMessages(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -945,7 +945,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function typing(array $data): string
+    public function typing(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -956,7 +956,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function starMessage(array $data): string
+    public function starMessage(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -967,7 +967,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function checkNumberStatus(array $data): string
+    public function checkNumberStatus(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -978,7 +978,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function allContacts(array $data): string
+    public function allContacts(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -989,7 +989,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function contact(array $data): string
+    public function contact(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -1000,7 +1000,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function profile(array $data): string
+    public function profile(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -1011,7 +1011,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function profilePic(array $data): string
+    public function profilePic(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -1022,7 +1022,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function profileStatus(array $data): string
+    public function profileStatus(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data, 'phone');
     }
@@ -1033,7 +1033,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function blocklist(array $data): string
+    public function blocklist(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -1044,7 +1044,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function blockContact(array $data): string
+    public function blockContact(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -1055,7 +1055,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function getBusinessProfilesProducts(array $data): string
+    public function getBusinessProfilesProducts(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -1066,7 +1066,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function getOderByMessageId(array $data): string
+    public function getOderByMessageId(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -1077,7 +1077,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function unblockContact(array $data): string
+    public function unblockContact(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -1088,7 +1088,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function getBatteryLevel(array $data): string
+    public function getBatteryLevel(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -1099,7 +1099,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function hostDevice(array $data): string
+    public function hostDevice(array $data = []): string
     {
         return $this->sendCurl('get', __FUNCTION__, $data);
     }
@@ -1110,7 +1110,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function downloadMedia(array $data): string
+    public function downloadMedia(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -1121,7 +1121,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function killServiceWorkier(array $data): string
+    public function killServiceWorkier(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -1132,7 +1132,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function restartService(array $data): string
+    public function restartService(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -1143,7 +1143,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function setProfilePic(array $data): string
+    public function setProfilePic(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -1154,7 +1154,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function setProfileStatus(array $data): string
+    public function setProfileStatus(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }
@@ -1165,7 +1165,7 @@ class Request
      * @param array $data
      * @return string
      */
-    public function changeUsername(array $data): string
+    public function changeUsername(array $data = []): string
     {
         return $this->sendCurl('post', __FUNCTION__, $data);
     }

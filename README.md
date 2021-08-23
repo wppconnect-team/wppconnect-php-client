@@ -14,54 +14,36 @@ Um simples cliente PHP que proporciona acesso fácil aos endpoints do WPPConnect
 
 * PHP 7.4 ou superior.
 
-## Configuração
+## Instalação 
 
-Array associativo que será aplicado a todas as solicitações criadas pelo cliente.
-
-Exemplo: 
-
-``` php
-$this->options = [
-    /**
-      * URL do WPPConnect Server
-     */
-    'base_url' => 'http://localhost:8081',
-    
-    /**
-     * Secret Key
-     * Veja: https://github.com/wppconnect-team/wppconnect-server#secret-key
-     */
-    'secret_key' => 'MYKeYPHP',
-
-    /**
-     * Nome da Session
-     */
-    'session' => 'mySession'
-];
+```
+composer require wppconnect-team/wppconnect-php-client
 ```
 
 ## Uso
 
+### Request
+
 ``` php
-namespace Wppconnect;
+namespace WPPConnect;
 
-# Use require or autoload
-require('wppconnect.php');
+require '../../vendor/autoload.php';
 
-$wppconnect = new Wppconnect([
+use WPPConnect\Http\Request;
+use WPPConnect\Helpers\Util;
+
+$wppconnect = new Request([
     'base_url' => 'http://localhost:8081',
     'secret_key' => 'MYKeYPHP',
     'session' => 'mySession',
+    'token' => null
 ]);
  ```
  
  ``` php
 # Function: Generated Token
 # /api/:session/generate-token
-$response = $wppconnect->generateToken([
-    'session' => $wppconnect->options['session'],
-    'secret_key' => $wppconnect->options['secret_key']
-]);
+$response = $wppconnect->generateToken();
 $response = $wppconnect->toArray($response);
 #debug
 $wppconnect->debug($response);
@@ -70,10 +52,9 @@ $wppconnect->debug($response);
  # Function: Start Session
  # /api/:session/start-session
 $response = $wppconnect->startSession([
-    'session' => $wppconnect->options['session'],
     'webhook' => null,
     'waitQrCode' => true
-    ]);
+]);
 $response = $wppconnect->toArray($response);
 #debug
 $wppconnect->debug($response);
@@ -81,9 +62,7 @@ $wppconnect->debug($response);
  ``` php
 # Function: Check Connection Session
 # /api/:session/check-connection-session
-$response = $wppconnect->checkConnectionSession([
-    'session' => $wppconnect->options['session'],
-]);
+$response = $wppconnect->checkConnectionSession([);
 $response = $wppconnect->toArray($response);
 #debug
 $wppconnect->debug($response);
@@ -93,7 +72,6 @@ $wppconnect->debug($response);
 # Function: Send Message
 # /api/:session/send-message    
 $response = $wppconnect->sendMessage([
-    'session' => $wppconnect->options['session'],
     'phone' => '5500000000000',
     'message' => 'Opa, funciona mesmo!',
     'isGroup' => false
@@ -107,7 +85,6 @@ $wppconnect->debug($response);
 # Function: Send File Base64
 # /api/:session/send-file-base64 
 $response = $wppconnect->sendFileBase64([
-    'session' => $wppconnect->options['session'],
     'phone' => '5500000000000',
     'filename' => 'Xpto',
     'base64' => $wppconnect->fileToBase64('xpto.jpg'),
@@ -122,7 +99,6 @@ $wppconnect->debug($response);
 # Function: Send Link Preview
 # /api/:session/send-link-preview
 $response = $wppconnect->sendLinkPreview([
-    'session' => $wppconnect->options['session'],
     'phone' => '5500000000000',
     'url' => 'https://github.com/wppconnect-team',
     'caption' => 'WppConnectTeam',
@@ -136,7 +112,6 @@ $wppconnect->debug($response);
 # Function: Send Location
 # /api/:session/send-location 
 $response = $wppconnect->sendLocation([
-    'session' => $wppconnect->options['session'],
     'phone' => '5500000000000',
     'lat' => '-23.5489',
     'lng' => '-46.6388',
@@ -148,6 +123,12 @@ $response = $wppconnect->toArray($response);
 $wppconnect->debug($response);
  ```
 
+### Response (Webhook)
+Exemplo de webhook para registrar/obter a solicitação/respostas do webhook WPPConnect.
+
+## Funções para uso do Banco de Dados (SQLite, MySQL e Postgres)
+
+
 ## Funções/Métodos Suportados (até este momento) 
 
 Este cliente PHP ainda está em desenvolvimento. 
@@ -157,109 +138,94 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 - generateToken([:session,:secret_key]) 
 
 ### Session
-- startAll([:secret_key])
-- showAllSessions([:session]);
-- startSession([:session,:webhook,:waitQrCode]);
-- closeSession([:session]);
-- logoutSession([:session]);
-- checkConnectionSession([:session]);
-- statusSession([:session]);
-- qrcodeSession([:session]);
+- startAll([:secret_key,:token])
+- showAllSessions([:session,,:token]);
+- startSession([:session,:token,:webhook,:waitQrCode]);
+- closeSession([:session,:token]);
+- logoutSession([:session,:token]);
+- checkConnectionSession([:session,:token]);
+- statusSession([:session,:token]);
+- qrcodeSession([:session,:token]);
 
 ### Mensagem
-- sendMessage([:session,:phone,:message,:isGroup]);
-- sendReply([:session,:phone,:message,:messageId,:isGroup]);
-- sendFileBase64([:session,:phone,:filename:base64:isGroup]);
-- sendStatus([:session,:message,:isGroup]);
-- sendLinkPreview([:session,:phone,:url,:caption,:isGroup]);
-- sendLocation([:session,:phone,:lat,:lng,:title,:isGroup]);
-- sendMentioned([:session,:phone,:message,:mentioned,:isGroup]);
+- sendMessage([:session,:token,:phone,:message,:isGroup]);
+- sendReply([:session,:token,:phone,:message,:messageId,:isGroup]);
+- sendFileBase64([:session,:token,:phone,:filename:base64:isGroup]);
+- sendStatus([:session,:token,:message,:isGroup]);
+- sendLinkPreview([:session,:token,:phone,:url,:caption,:isGroup]);
+- sendLocation([:session,:token,:phone,:lat,:lng,:title,:isGroup]);
+- sendMentioned([:session,:token,:phone,:message,:mentioned,:isGroup]);
+- sendButtons([:session,:token,:phone,:message,:title,:footer,:buttons]);
 
 ### Grupo
-- createGroup([:session,:participants[:phone,:phone,...],:name]);
-- leaveGroup([:session,:groupId]);
-- joinCode([:session,:inviteCode]);
-- groupMembers([:session,:groupId]);
-- addParticipantGroup([:session,:groupId,:phone]);
-- removeParticipantGroup([:session,:groupId,:phone,]);
-- promoteParticipantGroup([:session,:groupId,:phone]);
-- demoteParticipantGroup([:session,:groupId,:phone]);
-- groupAdmins([:session,:groupId]);
-- groupInviteLink([:session,:groupId]);
-- groupRevokeLink([:session,:groupId]);
-- allGroups([:session]);
-- groupInfoFromInviteLink([:session,:inviteCode]);
-- groupMembersIds([:session,:groupId]);
-- groupDescription([:session,:groupId,:description]);
-- groupProperty([:session,:groupId,:property,:value]);
-- groupSubject([:session,:groupId,:title]);
-- messagesAdminsOnly([:session,:groupId,:value]);
+- createGroup([:session,:token,:participants[:phone,:phone,...],:name]);
+- leaveGroup([:session,:token,:groupId]);
+- joinCode([:session,:token,:inviteCode]);
+- groupMembers([:session,:token,:groupId]);
+- addParticipantGroup([:session,:token,:groupId,:phone]);
+- removeParticipantGroup([:session,:token,:groupId,:phone,]);
+- promoteParticipantGroup([:session,:token,:groupId,:phone]);
+- demoteParticipantGroup([:session,:token,:groupId,:phone]);
+- groupAdmins([:session,:token,:groupId]);
+- groupInviteLink([:session,:token,:groupId]);
+- groupRevokeLink([:session,:token,:groupId]);
+- allGroups([:session,:token]);
+- groupInfoFromInviteLink([:session,:token,:inviteCode]);
+- groupMembersIds([:session,:token,:groupId]);
+- groupDescription([:session,:token,:groupId,:description]);
+- groupProperty([:session,:token,:groupId,:property,:value]);
+- groupSubject([:session,:token,:groupId,:title]);
+- messagesAdminsOnly([:session,:token,:groupId,:value]);
 
 ### Chat
-- archiveChat([:session,:phone,:isGroup]);
-- clearChat([:session,:phone,:isGroup]);
-- deleteChat([:session,:phone]);
-- deleteMessage([:session,:phone,:messageId]);
-- forwardMessages([:session,:phone,:messageId]);
-- allChats([:session]);
-- allChatsWithMessages([:session]);
-- allMessagesInChat([:session,:phone]);
-- allNewMessages([:session,:phone]);
-- unreadMessages([:session]);
-- allUnreadMessages([:session]);
-- chatById([:session,:phone]);
-- chatIsOnline([:session,:phone]);
-- lastSeen([:session,:phone]);
-- listMutes([:session,:type]);
-- loadMessagesInChat([:session,:phone]);
-- markUnseen([:session,:phone]);
-- pinChat([:session,:phone,:state,:isGroup]);
-- contactVcard([:session,:phone,:contactsId]);
-- sendMute([:session,:phone,:time,:type]);
-- sendSeen([:session,:phone]);
-- chatState([:session,:phone,:chatstate]);
-- typing([:session,:phone,:value,:isGroup]);
-- starMessage([:session,:messageId,:star]);
-- getMediaByMessage([:session,:messageId]);
+- archiveChat([:session,:token,:phone,:isGroup]);
+- clearChat([:session,:token,:phone,:isGroup]);
+- deleteChat([:session,:token,:phone]);
+- deleteMessage([:session,:token,:phone,:messageId]);
+- forwardMessages([:session,:token,:phone,:messageId]);
+- allChats([:session,:token]);
+- allChatsWithMessages([:session,:token]);
+- allMessagesInChat([:session,:token,:phone]);
+- allNewMessages([:session,:token,:phone]);
+- unreadMessages([:session,:token]);
+- allUnreadMessages([:session,:token]);
+- chatById([:session,:token,:phone]);
+- chatIsOnline([:session,:token,:phone]);
+- lastSeen([:session,:token,:phone]);
+- listMutes([:session,:token,:type]);
+- loadMessagesInChat([:session,:token,:phone]);
+- markUnseen([:session,:token,:phone]);
+- pinChat([:session,:token,:phone,:state,:isGroup]);
+- contactVcard([:session,:token,:phone,:contactsId]);
+- sendMute([:session,:token,:phone,:time,:type]);
+- sendSeen([:session,:token,:phone]);
+- chatState([:session,:token,:phone,:chatstate]);
+- typing([:session,:token,:phone,:value,:isGroup]);
+- starMessage([:session,:token,:messageId,:star]);
+- getMediaByMessage([:session,:token,:messageId]);
 
 ### Contatos
-- checkNumberStatus([:session,:phone]);
-- allContacts([:session]);
-- contact([:session,:phone]);
-- profile([:session,:phone,]);
-- profilePic([:session,:phone]);
-- profileStatus([:session,:phone]);
-- blockContact([:session,:phone]);
-- unblockContact([:session,:phone]);
-- blocklist([:session]);
-- setProfileStatus([:session,:status]);
-- changeUsername([:session,:name]);
+- checkNumberStatus([:session,:token,:phone]);
+- allContacts([:session,:token]);
+- contact([:session,:token,:phone]);
+- profile([:session,:token,:phone,]);
+- profilePic([:session,:token,:phone]);
+- profileStatus([:session,:token,:phone]);
+- blockContact([:session,:token,:phone]);
+- unblockContact([:session,:token,:phone]);
+- blocklist([:session,:token]);
+- setProfileStatus([:session,:token,:status]);
+- changeUsername([:session,:token,:name]);
 
 ### Device
-- getBatteryLevel([:session]);
-- hostDevice([:session]);
+- getBatteryLevel([:session,:token]);
+- hostDevice([:session,:token]);
 
 ### Outros
-- allBroadcastList([:session]);
-- subscribePresence([:session,:isGroup,:all]);
-- killServiceWorkier([:session]);
-- restartService([:session]);
-
-## Webhook
-
-Exemplo de [classe](https://github.com/wppconnect-team/wppconnect-php-client/blob/main/util/webhook.php) para registrar/obter a solicitação/respostas do webhook WPPConnect.
-
-### Uso
-
-``` php
-namespace Wppconnect;
-
-# Use require or autoload
-require('util/webhook.php');
-
-$webhook = new Webhook();
-$requestData = $webhook->getRequest();
-```
+- allBroadcastList([:session,:token]);
+- subscribePresence([:session,:token,:isGroup,:all]);
+- killServiceWorkier([:session,:token]);
+- restartService([:session,:token]);
 
 ## Postman
 
