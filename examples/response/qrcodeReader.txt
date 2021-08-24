@@ -1,0 +1,1 @@
+O:8:"stdClass":3:{s:5:"event";s:11:"status-find";s:7:"session";s:17:"mySessionChatwoot";s:6:"status";s:13:"qrReadSuccess";}

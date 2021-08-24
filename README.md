@@ -13,6 +13,7 @@ Um simples cliente PHP que proporciona acesso fácil aos endpoints do WPPConnect
 ## Requisitos
 
 * PHP 7.4 ou superior.
+* PHP Zip Extension
 
 ## Instalação 
 
@@ -126,6 +127,63 @@ $wppconnect->debug($response);
 ### Response (Webhook)
 Exemplo de webhook para registrar/obter a solicitação/respostas do webhook WPPConnect.
 
+``` php
+namespace WPPConnect;
+
+use WPPConnect\Http\Response;
+use WPPConnect\Helpers\Util;
+
+require '../../vendor/autoload.php';
+
+$config = require_once('../config/config.php');
+$webhook = new Response($config);
+$util = new Util();
+```
+``` php
+# QRCode
+if ($webhook->getEvent() == 'qrcode') :
+    'File: ' .
+        $util->base64ToFile($webhook->getQrcode(), 'image/png', $webhook->getFilesFolder());
+    die;
+endif;
+```
+``` php
+# Message
+if ($webhook->getEvent() == 'onmessage' and $webhook->getType() == 'chat') :
+    echo '
+        Content: ' . $webhook->getContent() . ' 
+        Date: ' . $webhook->getDate() . ' 
+        From: ' . $webhook->getFrom() . '
+        To: ' . $webhook->getTo();
+    die;
+endif;
+```
+``` php
+# File: Audio / Imagem / Arquivo / Video / Sticker
+if (
+    $webhook->getEvent() == 'onmessage' and
+    (
+        $webhook->getType() == 'ptt' or
+        $webhook->getType() == 'image' or
+        $webhook->getType() == 'document' or
+        $webhook->getType() == 'video' or
+        $webhook->getType() == 'sticker'
+
+    )
+) :
+    echo '
+        File: ' .
+        $util->base64ToFile(
+            $webhook->getBody(),
+            $webhook->getMimetype(),
+            $webhook->getFilesFolder()
+        )        . ' 
+        Date: ' . $webhook->getDate() . ' 
+        From: ' . $webhook->getFrom() . '
+        To: ' . $webhook->getTo();
+    die;
+endif;
+```
 ## Funções para uso do Banco de Dados (SQLite, MySQL e Postgres)
 
 

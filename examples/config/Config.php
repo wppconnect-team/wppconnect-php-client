@@ -53,7 +53,7 @@ return
             ]
         ],
         'logs' => [
-            'enable' => true,
+            'enable' => false,
             'folder' => 'logs'
         ],
         'mail' => [
@@ -62,5 +62,5 @@ return
             'mail_password' => null,
             'mail_from' => null,
             'mail_from_name' => null
-        ],
+        ]
     ];
