@@ -45,7 +45,10 @@ $wppconnect = new Request([
 # Function: Generated Token
 # /api/:session/generate-token
 $response = $wppconnect->generateToken();
-$response = $wppconnect->toArray($response);
+$response = $util->toArray($response);
+if (isset($response['status']) and $response['status'] == 'success') :
+    $wppconnect->options['token'] = $response['token'];
+endif;
 #debug
 $wppconnect->debug($response);
  ```
