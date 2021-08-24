@@ -39,6 +39,7 @@ $wppconnect = new Request([
     'session' => 'mySession',
     'token' => null
 ]);
+$util = new Util();
  ```
  
  ``` php
@@ -50,7 +51,7 @@ if (isset($response['status']) and $response['status'] == 'success') :
     $wppconnect->options['token'] = $response['token'];
 endif;
 #debug
-$wppconnect->debug($response);
+$util->debug($response);
  ```
  ``` php
  # Function: Start Session
@@ -61,7 +62,7 @@ $response = $wppconnect->startSession([
 ]);
 $response = $wppconnect->toArray($response);
 #debug
-$wppconnect->debug($response);
+$util->debug($response);
  ```
  ``` php
 # Function: Check Connection Session
@@ -69,7 +70,7 @@ $wppconnect->debug($response);
 $response = $wppconnect->checkConnectionSession([);
 $response = $wppconnect->toArray($response);
 #debug
-$wppconnect->debug($response);
+$util->debug($response);
 
  ```
  ``` php
@@ -82,7 +83,7 @@ $response = $wppconnect->sendMessage([
 ]);
 $response = $wppconnect->toArray($response);
 #debug
-$wppconnect->debug($response);
+$util->debug($response);
 
  ```
  ``` php
@@ -96,7 +97,7 @@ $response = $wppconnect->sendFileBase64([
 ]);
 $response = $wppconnect->toArray($response);
 #debug
-$wppconnect->debug($response);
+$util->debug($response);
  ```
  
 ``` php
@@ -110,7 +111,7 @@ $response = $wppconnect->sendLinkPreview([
 ]);
 $response = $wppconnect->toArray($response);
 #debug
-$wppconnect->debug($response);
+$util->debug($response);
  ```
  ``` php
 # Function: Send Location
@@ -124,7 +125,7 @@ $response = $wppconnect->sendLocation([
 ]);
 $response = $wppconnect->toArray($response);
 #debug
-$wppconnect->debug($response);
+$util->debug($response);
  ```
 
 ### Response (Webhook)
