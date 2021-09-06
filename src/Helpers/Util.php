@@ -145,7 +145,7 @@ class Util
     {
 
         $filename = (date('Ymd') - 1);
-        if (!file_exists($path . '/' . $filename . '.zip')) :
+        if (!file_exists($path . '/' . $filename . '.zip') and file_exists($path . '/' . $filename . '.log')) :
             $zip = new ZipArchive();
             $zip->open($path . '/' . $filename . '.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
             $zip->addFile($path . '/' . $filename . '.log');
