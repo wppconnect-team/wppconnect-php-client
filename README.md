@@ -231,7 +231,7 @@ $adapter->insert('mensagem', ['session' => 'MySessionName', 'content' => 'MyCont
 #Update
 $adapter->update('mensagem', ['content' => 'MyContent_Edit'], ['id' => 1]);
 
-#Update
+#Delete
 $adapter->delete('mensagem', ['id' => 1]);
 
 #Truncate Table
@@ -366,6 +366,10 @@ Veja [aqui](https://github.com/wppconnect-team/wppconnect-server/blob/main/src/r
 - subscribePresence([:session,:token,:isGroup,:all]);
 - killServiceWorkier([:session,:token]);
 - restartService([:session,:token]);
+
+## Tutórial de Uso com Docker
+
+Acesse o tutorial de como utilizar o PHP Client com Docker no nosso Canal do Youtube: https://www.youtube.com/watch?v=o_TBIyxFbNI
 
 ## Postman
 
