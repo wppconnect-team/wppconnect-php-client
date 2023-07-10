@@ -68,8 +68,8 @@ class Util
      */
     public function fileToBase64(string $filePath): string
     {
-        $finfo = new \finfo(FILEINFO_MIME_TYPE);
-        return 'data:' . $finfo->file($filePath) . ';base64,' . base64_encode(file_get_contents($filePath));
+        $type = image_type_to_mime_type(exif_imagetype($filePath));
+        return 'data:' . $type . ';base64,' . base64_encode(file_get_contents($filePath));
     }
 
     /**
