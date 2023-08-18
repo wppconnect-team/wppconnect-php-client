@@ -22,6 +22,7 @@ namespace WPPConnect\Http;
 
 class Request
 {
+    protected $shouldDie = true;
 
     public function __construct(array $options = [])
     {
@@ -51,6 +52,11 @@ class Request
              */
             'token' => $options['token']
         ];
+    }
+
+    public function shouldThrown()
+    {
+        $this->shouldDie = false;
     }
 
     /**
@@ -181,11 +187,18 @@ class Request
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         $result = curl_exec($ch);
-        if ($result === false) :
-            echo 'Curl error: ' . curl_error($ch);
-            die;
-        endif;
+        $error = curl_error($ch);
         curl_close($ch);
+        if ($result === false) :
+            if ($this->shouldDie) :
+                echo 'Curl error: ' . $error;
+                die;
+            endif;
+
+            throw new \Exception($error);
+
+        endif;
+
         return $this->response($result);
     }
 
